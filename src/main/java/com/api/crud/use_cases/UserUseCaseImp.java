@@ -1,17 +1,18 @@
-package com.api.crud.services;
+package com.api.crud.use_cases;
 
+import com.api.crud.domain.use_cases.IUserUseCase;
 import com.api.crud.models.UserModel;
-import com.api.crud.repositories.IUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.api.crud.domain.repositories.IUserRepository;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
-@Service
-public class UserService {
-    @Autowired
-    IUserRepository userRepository;
+public class UserUseCaseImp implements IUserUseCase {
+    private final IUserRepository userRepository;
+
+    public UserUseCaseImp(IUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public ArrayList<UserModel> getUsers() {
         return (ArrayList<UserModel>) userRepository.findAll();
@@ -44,5 +45,9 @@ public class UserService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public UserModel findById(long id) {
+        return  userRepository.findById(id).orElse(null);
     }
 }
